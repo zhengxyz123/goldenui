@@ -45,3 +45,4 @@ napoleon_include_special_with_doc = True
 # Options for HTML output
 html_theme = "furo"
 html_static_path = ["_static"]
+html_favicon = "_static/favicon.ico"
