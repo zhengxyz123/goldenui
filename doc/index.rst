@@ -8,3 +8,4 @@ gletter is a GUI framework for pyglet, a windowing and multimedia library for Py
     :caption: API Reference
 
     modules/patch
+    modules/widgets/index

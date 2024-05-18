@@ -175,7 +175,7 @@ class ThreePatch:
         height: Optional[int] = None,
     ):
         """Simultaneously change the position and size.
-        
+
         Args:
             x:
                 X coordinate of the ThreePatch.
@@ -419,7 +419,7 @@ class NinePatch:
         height: Optional[int] = None,
     ):
         """Simultaneously change the position and size.
-        
+
         Args:
             x:
                 X coordinate of the NinePatch.
