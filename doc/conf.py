@@ -18,7 +18,6 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx_autodoc_typehints",
 ]
-autosummary_generate = False
 templates_path = ["_templates"]
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 intersphinx_mapping = {
@@ -40,7 +39,6 @@ always_use_bars_union = True
 
 # Napoleon settings
 napoleon_numpy_docstring = False
-napoleon_include_special_with_doc = True
 
 # Options for HTML output
 html_theme = "furo"

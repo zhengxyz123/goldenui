@@ -95,7 +95,7 @@ class ThreePatch:
 
     @property
     def position(self) -> tuple[int, int]:
-        """The (x, y) coordinates of the patch, as a tuple."""
+        """The ``(x, y)`` coordinates of the patch, as a tuple."""
         return self._x, self._y
 
     @position.setter
@@ -299,7 +299,7 @@ class NinePatch:
 
     @property
     def position(self) -> tuple[int, int]:
-        """The (x, y) coordinates of the patch, as a tuple."""
+        """The ``(x, y)`` coordinates of the patch, as a tuple."""
         return self._x, self._y
 
     @position.setter

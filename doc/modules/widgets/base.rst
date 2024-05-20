@@ -6,7 +6,7 @@ gletter.widgets.base
 .. autoclass:: WidgetBase
     :show-inheritance:
 
-    .. rubric:: Property
+    .. rubric:: Properties
     .. autoproperty:: x
     .. autoproperty:: y
     .. autoproperty:: position
@@ -16,3 +16,32 @@ gletter.widgets.base
     .. autoproperty:: focused
     .. autoproperty:: aabb
     .. autoproperty:: value
+
+    .. rubric:: Internal Hooks
+    .. automethod:: _check_hit
+    .. automethod:: _set_enabled
+    .. automethod:: _update_position
+
+    .. rubric:: Events
+    .. automethod:: on_focus
+    .. automethod:: on_unfocus
+
+    The following events are triggered by pyglet, they are described in `pyglet.window
+    <https://pyglet.readthedocs.io/en/latest/modules/window.html>`_ thoroughly.
+
+    .. automethod:: on_key_press
+    .. automethod:: on_key_release
+    .. automethod:: on_mouse_press
+    .. automethod:: on_mouse_release
+    .. automethod:: on_mouse_drag
+    .. automethod:: on_mouse_motion
+    .. automethod:: on_mouse_scroll
+    .. automethod:: on_text
+    .. automethod:: on_text_motion
+    .. automethod:: on_text_motion_select
+
+    .. rubric:: Special Methods
+
+.. autoclass:: WidgetStyleBase
+
+    .. rubric:: Special Methods

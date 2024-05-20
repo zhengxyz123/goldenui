@@ -5,10 +5,6 @@ gletter.patch
 
 .. autoclass:: ThreePatch
 
-    .. rubric:: Methods
-    .. automethod:: draw
-    .. automethod:: update
-
     .. rubric:: Properties
     .. autoproperty:: x
     .. autoproperty:: y
@@ -17,12 +13,14 @@ gletter.patch
     .. autoproperty:: height
     .. autoproperty:: batch
     .. autoproperty:: group
-
-.. autoclass:: NinePatch
-
+    
     .. rubric:: Methods
     .. automethod:: draw
     .. automethod:: update
+    
+    .. rubric:: Special Methods
+
+.. autoclass:: NinePatch
 
     .. rubric:: Properties
     .. autoproperty:: scale
@@ -33,3 +31,9 @@ gletter.patch
     .. autoproperty:: height
     .. autoproperty:: batch
     .. autoproperty:: group
+    
+    .. rubric:: Methods
+    .. automethod:: draw
+    .. automethod:: update
+    
+    .. rubric:: Special Methods

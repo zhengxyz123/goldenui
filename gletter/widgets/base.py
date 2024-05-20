@@ -1,9 +1,16 @@
-"""Base class of all widgets.
+"""Base class of all widgets and widget styles.
+
+In this module, gletter provides two base classes for GUI programming.
+
+One is :py:class:`~.WidgetBase`, this class defines how a widget behaves.
+
+The other is :py:class:`~.WidgetStyleBase`, this class defines how a widget looks like.
 """
 
 from typing import Any, Optional
 
 from pyglet.event import EventDispatcher as _EventDispatcher
+from pyglet.graphics import Batch, Group
 
 
 class WidgetBase(_EventDispatcher):
@@ -11,10 +18,10 @@ class WidgetBase(_EventDispatcher):
 
     def __init__(
         self,
-        x: Optional[int] = 0,
-        y: Optional[int] = 0,
-        width: Optional[int] = 0,
-        height: Optional[int] = 0,
+        x: int = 0,
+        y: int = 0,
+        width: int = 0,
+        height: int = 0,
         enabled: Optional[bool] = True,
     ):
         """Create a widget.
@@ -154,6 +161,18 @@ class WidgetBase(_EventDispatcher):
     def value(self, value: Any):
         raise NotImplementedError("value depends on control type")
 
+    def _check_hit(self, x: int, y: int) -> int:
+        """Internal hook for checking which part of widget has been hitted.
+
+        Returns:
+            ``-1`` for not hit, other non-negative value reveals hit some part of the
+            widget.
+        """
+        if self._x < x < self._x + self._width and self._y < y < self._y + self._height:
+            return 0
+        else:
+            return -1
+
     def _set_enabled(self, enabled: bool):
         """Internal hook for setting enabled.
 
@@ -162,13 +181,8 @@ class WidgetBase(_EventDispatcher):
         """
         pass
 
-    def _check_hit(self, x: int, y: int) -> int:
-        if self._x < x < self._x + self._width and self._y < y < self._y + self._height:
-            return 0
-        else:
-            return -1
-
     def _update_position(self):
+        """Internal hook for changing position and size."""
         raise NotImplementedError("unable to reposition this Widget")
 
     def update_groups(self, order: int):
@@ -177,9 +191,11 @@ class WidgetBase(_EventDispatcher):
     # Events for gletter.
 
     def on_focus(self):
+        """Triggered when setting :py:attr:`.focused` to ``True``."""
         pass
 
     def on_unfocus(self):
+        """Triggered when setting :py:attr:`.focused` to ``False``."""
         pass
 
     # Events for pyglet.
@@ -229,4 +245,28 @@ WidgetBase.register_event_type("on_text")
 WidgetBase.register_event_type("on_text_motion")
 WidgetBase.register_event_type("on_text_motion_select")
 
-__all__ = ("WidgetBase",)
+
+class WidgetStyleBase:
+    """The base class of all widget styles."""
+
+    def __init__(self, batch: Optional[Batch] = None, group: Optional[Group] = None):
+        self._style = ""
+        self._batch = batch
+        self._group = group
+
+    @property
+    def style(self) -> str:
+        return self._style
+
+    @style.setter
+    def style(self, new_style: str):
+        if self._style == new_style:
+            return
+        self._style = new_style
+        self._set_style(new_style)
+
+    def _set_style(self, style: str):
+        pass
+
+
+__all__ = "WidgetStyleBase", "WidgetBase"
