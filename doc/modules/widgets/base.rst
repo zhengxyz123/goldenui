@@ -26,8 +26,8 @@ gletter.widgets.base
     .. automethod:: on_focus
     .. automethod:: on_unfocus
 
-    The following events are triggered by pyglet, they are described in `pyglet.window
-    <https://pyglet.readthedocs.io/en/latest/modules/window.html>`_ thoroughly.
+    The following events are triggered by pyglet, they are described in
+    :py:mod:`pyglet.window` thoroughly.
 
     .. automethod:: on_key_press
     .. automethod:: on_key_release
@@ -43,5 +43,11 @@ gletter.widgets.base
     .. rubric:: Special Methods
 
 .. autoclass:: WidgetStyleBase
+
+    .. rubric:: Properties
+    .. autoproperty:: style
+
+    .. rubric:: Internal Hooks
+    .. automethod:: _set_style
 
     .. rubric:: Special Methods

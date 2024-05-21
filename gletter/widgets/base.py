@@ -22,7 +22,7 @@ class WidgetBase(_EventDispatcher):
         y: int = 0,
         width: int = 0,
         height: int = 0,
-        enabled: Optional[bool] = True,
+        enabled: bool = True,
     ):
         """Create a widget.
 
@@ -165,8 +165,8 @@ class WidgetBase(_EventDispatcher):
         """Internal hook for checking which part of widget has been hitted.
 
         Returns:
-            ``-1`` for not hit, other non-negative value reveals hit some part of the
-            widget.
+            ``-1`` means that the widget was not hitted, while other non-negative
+            integers mean that different parts of the widget were hitted.
         """
         if self._x < x < self._x + self._width and self._y < y < self._y + self._height:
             return 0
@@ -176,8 +176,7 @@ class WidgetBase(_EventDispatcher):
     def _set_enabled(self, enabled: bool):
         """Internal hook for setting enabled.
 
-        Override this in subclasses to perform effects when a widget is enabled or
-        disabled.
+        Override this method to perform effects when a widget is enabled or disabled.
         """
         pass
 
@@ -250,12 +249,22 @@ class WidgetStyleBase:
     """The base class of all widget styles."""
 
     def __init__(self, batch: Optional[Batch] = None, group: Optional[Group] = None):
+        """
+        Create a widget style.
+
+        Args:
+            batch:
+                Optional batch to add the style to.
+            group:
+                Optional parent group of the style.
+        """
         self._style = ""
         self._batch = batch
         self._group = group
 
     @property
     def style(self) -> str:
+        """Get and set the style of widget."""
         return self._style
 
     @style.setter
@@ -266,7 +275,11 @@ class WidgetStyleBase:
         self._set_style(new_style)
 
     def _set_style(self, style: str):
+        """Internal hook for setting widget style.
+
+        Override this method to set widget style when :py:attr:`.style` is changed.
+        """
         pass
 
 
-__all__ = "WidgetStyleBase", "WidgetBase"
+__all__ = "WidgetBase", "WidgetStyleBase"
