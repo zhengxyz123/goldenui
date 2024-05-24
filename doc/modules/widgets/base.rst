@@ -45,7 +45,7 @@ gletter.widgets.base
 .. autoclass:: WidgetStyleBase
 
     .. rubric:: Properties
-    .. autoproperty:: style
+    .. autoproperty:: style_name
 
     .. rubric:: Internal Hooks
     .. automethod:: _set_style

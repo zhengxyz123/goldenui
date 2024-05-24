@@ -56,6 +56,7 @@ class WidgetBase(_EventDispatcher):
     def x(self, value: int):
         self._x = value
         self._update_position()
+        self.dispatch_event("on_repositioning", self)
 
     @property
     def y(self) -> int:
@@ -66,6 +67,7 @@ class WidgetBase(_EventDispatcher):
     def y(self, value: int):
         self._y = value
         self._update_position()
+        self.dispatch_event("on_repositioning", self)
 
     @property
     def position(self) -> tuple[int, int]:
@@ -76,6 +78,7 @@ class WidgetBase(_EventDispatcher):
     def position(self, values: tuple[int, int]):
         self._x, self._y = values
         self._update_position()
+        self.dispatch_event("on_repositioning", self)
 
     @property
     def width(self) -> int:
@@ -86,6 +89,7 @@ class WidgetBase(_EventDispatcher):
     def width(self, value: int):
         self._width = value
         self._update_position()
+        self.dispatch_event("on_repositioning", self)
 
     @property
     def height(self) -> int:
@@ -94,8 +98,9 @@ class WidgetBase(_EventDispatcher):
 
     @height.setter
     def height(self, value: int):
-        self._height = height
+        self._height = value
         self._update_position()
+        self.dispatch_event("on_repositioning", self)
 
     @property
     def enabled(self) -> bool:
@@ -111,7 +116,7 @@ class WidgetBase(_EventDispatcher):
         return self._enabled
 
     @enabled.setter
-    def enabled(self, new_enabled: bool) -> None:
+    def enabled(self, new_enabled: bool):
         if self._enabled == new_enabled:
             return
         self._enabled = new_enabled
@@ -121,16 +126,17 @@ class WidgetBase(_EventDispatcher):
     def focused(self) -> bool:
         """Get and set whether this widget is focused.
 
-        .. note:: User should not set this property, it will be changed by gletter
-                  itself. Uncorrectly focus on a widget may lead to a mess.
+        .. warning::
+            Developer should not set this property, it will be changed by gletter itself.
+            Uncorrectly focus on a widget may lead to a mess.
         """
         return self._focused
 
     @focused.setter
     def focused(self, new_focused: bool):
-        if self._focused == new_focus:
+        if self._focused == new_focused:
             return
-        self._focused = new_focus
+        self._focused = new_focused
         if self._focused:
             self.dispatch_event("on_focus")
         else:
@@ -197,6 +203,9 @@ class WidgetBase(_EventDispatcher):
         """Triggered when setting :py:attr:`.focused` to ``False``."""
         pass
 
+    def on_repositioning(self, widget: "WidgetBase"):
+        pass
+
     # Events for pyglet.
 
     def on_key_press(self, symbol: int, modifiers: int):
@@ -234,6 +243,7 @@ class WidgetBase(_EventDispatcher):
 
 WidgetBase.register_event_type("on_focus")
 WidgetBase.register_event_type("on_unfocus")
+WidgetBase.register_event_type("on_repositioning")
 WidgetBase.register_event_type("on_key_press")
 WidgetBase.register_event_type("on_key_release")
 WidgetBase.register_event_type("on_mouse_press")
@@ -258,26 +268,26 @@ class WidgetStyleBase:
             group:
                 Optional parent group of the style.
         """
-        self._style = ""
+        self._style_name = ""
         self._batch = batch
         self._group = group
 
     @property
-    def style(self) -> str:
-        """Get and set the style of widget."""
-        return self._style
+    def style_name(self) -> str:
+        """Get and set the style name of widget."""
+        return self._style_name
 
-    @style.setter
-    def style(self, new_style: str):
-        if self._style == new_style:
+    @style_name.setter
+    def style_name(self, new_name: str):
+        if self._style_name == new_name:
             return
-        self._style = new_style
-        self._set_style(new_style)
+        self._style_name = new_name
+        self._set_style()
 
-    def _set_style(self, style: str):
+    def _set_style(self):
         """Internal hook for setting widget style.
 
-        Override this method to set widget style when :py:attr:`.style` is changed.
+        Override this method to set widget style when it is changed.
         """
         pass
 
