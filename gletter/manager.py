@@ -3,8 +3,6 @@
 In this module, :py:class:`~.GUIManager` provides a way to control widgets.
 """
 
-from typing import Iterable
-
 from pyglet.window import Window as _Window
 
 from gletter.widgets.base import WidgetBase
@@ -15,7 +13,7 @@ class GUIManager:
 
     It provides an efficient way to handle dispatching keyboard and mouse events to
     widgets. This is done by implementing a 2D spatial hash. Only widgets that are in the
-    vicinity of the mouse pointer will be passed Window events, which can greatly improve
+    vicinity of the mouse pointer will be passed window events, which can greatly improve
     efficiency when a large quantity of widgets are in use.
     """
 
@@ -32,8 +30,8 @@ class GUIManager:
         self._window = window
         self._enabled = True
         self._cell_size = cell_size
-        self._cells = {}
-        self._active_widgets = set()
+        self._cells: dict[tuple[int, int], set[WidgetBase]] = {}
+        self._active_widgets: set[WidgetBase] = set()
         self._mouse_pos = (0, 0)
 
     @property
@@ -57,18 +55,22 @@ class GUIManager:
         """Normalize position to cell."""
         return x // self._cell_size, y // self._cell_size
 
-    def add(self, widget: Iterable[WidgetBase] | WidgetBase):
+    def add(self, *widgets: WidgetBase):
         """Add some widgets to the manager.
 
         Args:
             widget:
                 Widgets want to add.
         """
-        pass
+        for widget in widgets:
+            min_vec = self._hash(*widget.aabb[0:2])
+            max_vec = self._hash(*widget.aabb[2:4])
+            for i in range(min_vec[0], max_vec[0] + 1):
+                for j in range(min_vec[1], max_vec[1] + 1):
+                    self._cells.setdefault((i, j), set()).add(widget)
+            widget.set_handler("on_repositioning", self.on_repositioning_hook)
 
-    def remove(
-        self, widget: Iterable[WidgetBase] | WidgetBase, temporary: bool = False
-    ):
+    def remove(self, *widgets: WidgetBase, temporary: bool = False):
         """Remove some added widgets.
 
         Args:
@@ -81,7 +83,11 @@ class GUIManager:
             The ``temporary`` parameter is for internal usage. Developer should not turn
             it on.
         """
-        pass
+        for widget in widgets:
+            for cell in self._cells.values():
+                if widget in cell:
+                    cell.remove(widget)
+            widget.set_handler("on_repositioning", lambda w: None)
 
     def draw(self):
         """Draw all widgets in the manager."""
@@ -92,36 +98,55 @@ class GUIManager:
         self.add(widget)
 
     def on_key_press(self, symbol: int, modifiers: int):
-        pass
+        for cell in self._cells.values():
+            for widget in cell:
+                widget.dispatch_event("on_key_press", symbol, modifiers)
 
     def on_key_release(self, symbol: int, modifiers: int):
-        pass
+        for cell in self._cells.values():
+            for widget in cell:
+                widget.dispatch_event("on_key_release", symbol, modifiers)
 
     def on_mouse_press(self, x: int, y: int, buttons: int, modifiers: int):
-        pass
+        for widget in self._cells.get(self._hash(x, y), set()):
+            widget.dispatch_event("on_mouse_press", x, y, buttons, modifiers)
+            self._active_widgets.add(widget)
 
     def on_mouse_release(self, x: int, y: int, buttons: int, modifiers: int):
-        pass
+        for widget in self._active_widgets:
+            widget.dispatch_event("on_mouse_release", x, y, buttons, modifiers)
+        self._active_widgets.clear()
 
     def on_mouse_drag(
         self, x: int, y: int, dx: int, dy: int, buttons: int, modifiers: int
     ):
+        for widget in self._active_widgets:
+            widget.dispatch_event("on_mouse_drag", x, y, dx, dy, buttons, modifiers)
         self._mouse_pos = x, y
 
     def on_mouse_motion(self, x: int, y: int, dx: int, dy: int):
+        for widget in self._cells.get(self._hash(x, y), set()):
+            widget.dispatch_event("on_mouse_motion", x, y, dx, dy)
         self._mouse_pos = x, y
 
     def on_mouse_scroll(self, x: int, y: int, scroll_x: int, scroll_y: int):
-        pass
+        for widget in self._cells.get(self._hash(x, y), set()):
+            widget.on_mouse_scroll(x, y, scroll_x, scroll_y)
 
     def on_text(self, text: str):
-        pass
+        for cell in self._cells.values():
+            for widget in cell:
+                widget.dispatch_event("on_text", text)
 
     def on_text_motion(self, motion: int):
-        pass
+        for cell in self._cells.values():
+            for widget in cell:
+                widget.dispatch_event("on_text_motion", motion)
 
     def on_text_motion_select(self, motion: int):
-        pass
+        for cell in self._cells.values():
+            for widget in cell:
+                widget.dispatch_event("on_text_motion_select", motion)
 
 
 __all__ = ("GUIManager",)

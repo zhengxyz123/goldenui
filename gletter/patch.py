@@ -1,6 +1,6 @@
 """ThreePatch and NinePatch.
 
-Patchs are like :py:class:`pyglet.sprite.Sprite`, but they split a whole image into
+Patchs are like :py:class:`~pyglet.sprite.Sprite`, but they split a whole image into
 several parts to avoid distortion when scaling them.
 """
 
