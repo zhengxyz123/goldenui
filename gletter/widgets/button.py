@@ -1,11 +1,11 @@
 from gletter.widgets.base import WidgetBase, WidgetStyleBase
 
 
-class Button:
+class Button(WidgetBase):
     pass
 
 
-class ToggleButton:
+class ToggleButton(WidgetStyleBase):
     pass
 
 

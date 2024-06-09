@@ -3,9 +3,8 @@
 In this module, :py:class:`~.GUIManager` provides a way to control widgets.
 """
 
-from pyglet.window import Window as _Window
-
 from gletter.widgets.base import WidgetBase
+from pyglet.window import Window as _Window
 
 
 class GUIManager:
@@ -36,7 +35,7 @@ class GUIManager:
 
     @property
     def enabled(self) -> bool:
-        """Get and set whether the manager is enabled."""
+        """Whether the manager is enabled."""
         return self._enabled
 
     @enabled.setter

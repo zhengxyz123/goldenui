@@ -12,6 +12,8 @@ gletter.widgets.base
     .. autoproperty:: position
     .. autoproperty:: width
     .. autoproperty:: height
+    .. autoproperty:: batch
+    .. autoproperty:: group
     .. autoproperty:: enabled
     .. autoproperty:: focused
     .. autoproperty:: aabb
@@ -20,7 +22,6 @@ gletter.widgets.base
     .. rubric:: Internal Hooks
     .. automethod:: _check_hit
     .. automethod:: _set_enabled
-    .. automethod:: _update_position
 
     .. rubric:: Events
     .. automethod:: on_focus
@@ -46,8 +47,11 @@ gletter.widgets.base
 
     .. rubric:: Properties
     .. autoproperty:: style_name
+    .. autoproperty:: batch
+    .. autoproperty:: group
 
     .. rubric:: Internal Hooks
     .. automethod:: _set_style
+    .. automethod:: _update_position
 
     .. rubric:: Special Methods

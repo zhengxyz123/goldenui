@@ -6,15 +6,88 @@ One is :py:class:`~.WidgetBase`, this class defines how a widget behaves.
 
 The other is :py:class:`~.WidgetStyleBase`, this class defines how a widget looks like.
 """
-
-from typing import Any, Optional
+from typing import Any, Optional, Type
 
 from pyglet.event import EventDispatcher as _EventDispatcher
 from pyglet.graphics import Batch, Group
 
 
+class WidgetStyleBase:
+    """The base class of all widget styles."""
+
+    def __init__(
+        self,
+        widget: "WidgetBase",
+        batch: Optional[Batch] = None,
+        group: Optional[Group] = None,
+    ):
+        """
+        Create a widget style.
+
+        Args:
+            widget:
+                Which widget uses this style.
+            batch:
+                Optional batch to add the style to.
+            group:
+                Optional parent group of the style.
+        """
+        self._style_name = ""
+        self._widget = widget
+        self._batch = batch
+        self._group = group
+
+    @property
+    def style_name(self) -> str:
+        """The style name of widget."""
+        return self._style_name
+
+    @style_name.setter
+    def style_name(self, new_name: str):
+        if self._style_name == new_name:
+            return
+        self._style_name = new_name
+        self._set_style()
+
+    @property
+    def batch(self) -> Batch:
+        """Graphics batch."""
+        return self._batch
+
+    @batch.setter
+    def batch(self, new_batch: Batch):
+        self._batch = new_batch
+
+    @property
+    def group(self) -> Group:
+        """Parent graphics group."""
+        return self._group
+
+    @group.setter
+    def group(self, new_group: Group):
+        self._group = new_group
+
+    def _set_style(self):
+        """Internal hook for setting widget style.
+
+        Override this method to set widget style when it is changed.
+        """
+        pass
+
+    def _update_position(self):
+        """Internal hook for changing position and size.
+
+        Raises:
+            NotImplementedError:
+                It will be occured when this method is not override.
+        """
+        raise NotImplementedError("unable to reposition the widget")
+
+
 class WidgetBase(_EventDispatcher):
     """The base class of all widgets."""
+
+    _style_class = WidgetStyleBase
 
     def __init__(
         self,
@@ -44,6 +117,7 @@ class WidgetBase(_EventDispatcher):
         self._height = height
         self._enabled = enabled
         self._focused = False
+        self._style = _style_class(self)
         self._bg_group = None
         self._fg_group = None
 
@@ -55,7 +129,7 @@ class WidgetBase(_EventDispatcher):
     @x.setter
     def x(self, value: int):
         self._x = value
-        self._update_position()
+        self._style._update_position()
         self.dispatch_event("on_repositioning", self)
 
     @property
@@ -66,7 +140,7 @@ class WidgetBase(_EventDispatcher):
     @y.setter
     def y(self, value: int):
         self._y = value
-        self._update_position()
+        self._style._update_position()
         self.dispatch_event("on_repositioning", self)
 
     @property
@@ -77,7 +151,7 @@ class WidgetBase(_EventDispatcher):
     @position.setter
     def position(self, values: tuple[int, int]):
         self._x, self._y = values
-        self._update_position()
+        self._style._update_position()
         self.dispatch_event("on_repositioning", self)
 
     @property
@@ -88,7 +162,7 @@ class WidgetBase(_EventDispatcher):
     @width.setter
     def width(self, value: int):
         self._width = value
-        self._update_position()
+        self._style._update_position()
         self.dispatch_event("on_repositioning", self)
 
     @property
@@ -99,12 +173,30 @@ class WidgetBase(_EventDispatcher):
     @height.setter
     def height(self, value: int):
         self._height = value
-        self._update_position()
+        self._style._update_position()
         self.dispatch_event("on_repositioning", self)
 
     @property
+    def batch(self) -> Batch:
+        """Graphics batch."""
+        return self._style.batch
+
+    @batch.setter
+    def batch(self, new_batch: Batch):
+        self._style.batch = new_batch
+
+    @property
+    def group(self) -> Group:
+        """Parent graphics group."""
+        return self._style.group
+
+    @group.setter
+    def group(self, new_group: Group):
+        self._style.group = new_group
+
+    @property
     def enabled(self) -> bool:
-        """Get and set whether this widget is enabled.
+        """Whether this widget is enabled.
 
         To react to changes in this value, override :py:meth:`._set_enabled` on widgets.
         For example, you may want to cue the user by:
@@ -124,7 +216,7 @@ class WidgetBase(_EventDispatcher):
 
     @property
     def focused(self) -> bool:
-        """Get and set whether this widget is focused.
+        """Whether this widget is focused.
 
         .. warning::
             Developer should not set this property, it will be changed by gletter itself.
@@ -153,7 +245,7 @@ class WidgetBase(_EventDispatcher):
 
     @property
     def value(self) -> Any:
-        """Query or set the Widget's value.
+        """The Widget's value.
 
         This property allows you to set the value of a Widget directly, without any user
         input. This could be used, for example, to restore widgets to a previous state,
@@ -185,10 +277,6 @@ class WidgetBase(_EventDispatcher):
         Override this method to perform effects when a widget is enabled or disabled.
         """
         pass
-
-    def _update_position(self):
-        """Internal hook for changing position and size."""
-        raise NotImplementedError("unable to reposition this Widget")
 
     def update_groups(self, order: int):
         pass
@@ -253,43 +341,6 @@ WidgetBase.register_event_type("on_mouse_motion")
 WidgetBase.register_event_type("on_text")
 WidgetBase.register_event_type("on_text_motion")
 WidgetBase.register_event_type("on_text_motion_select")
-
-
-class WidgetStyleBase:
-    """The base class of all widget styles."""
-
-    def __init__(self, batch: Optional[Batch] = None, group: Optional[Group] = None):
-        """
-        Create a widget style.
-
-        Args:
-            batch:
-                Optional batch to add the style to.
-            group:
-                Optional parent group of the style.
-        """
-        self._style_name = ""
-        self._batch = batch
-        self._group = group
-
-    @property
-    def style_name(self) -> str:
-        """Get and set the style name of widget."""
-        return self._style_name
-
-    @style_name.setter
-    def style_name(self, new_name: str):
-        if self._style_name == new_name:
-            return
-        self._style_name = new_name
-        self._set_style()
-
-    def _set_style(self):
-        """Internal hook for setting widget style.
-
-        Override this method to set widget style when it is changed.
-        """
-        pass
 
 
 __all__ = "WidgetBase", "WidgetStyleBase"
