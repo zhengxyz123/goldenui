@@ -7,3 +7,4 @@ goldenui.widgets
     :maxdepth: 1
 
     base
+    button

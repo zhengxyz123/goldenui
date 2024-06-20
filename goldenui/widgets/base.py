@@ -105,11 +105,12 @@ class WidgetBase(EventDispatcher):
     @property
     def batch(self) -> Batch:
         """Graphics batch."""
-        return self._style.batch
+        return self._batch
 
     @batch.setter
     def batch(self, new_batch: Batch):
-        self.batch = new_batch
+        self._batch = new_batch
+        self._update_batch()
 
     @property
     def group(self) -> Group:
@@ -183,6 +184,10 @@ class WidgetBase(EventDispatcher):
 
         Override this method to perform effects when a widget is enabled or disabled.
         """
+        pass
+
+    def _update_group(self):
+        """Internal hook to change batch when :py:attr:`.batch` is modified."""
         pass
 
     def _update_group(self):

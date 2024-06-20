@@ -20,3 +20,6 @@ dynamic = ["version", "description"]
 
 [project.urls]
 Home = "https://github.com/zhengxyz123/goldenui"
+
+[options.entry_point.pyinstaller40]
+hook-dirs = "goldenui.__pyinstaller:get_hook_dirs"

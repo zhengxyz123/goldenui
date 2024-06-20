@@ -144,6 +144,9 @@ class ThreePatch:
             sprite.group = group
 
     def _update(self):
+        if 2 * self._height > self._width:
+            raise ValueError("width should larger than twice of height")
+
         corner_width = self._sprites[0].image.width
         corner_height = self._sprites[0].image.height
         corner_width *= self._height / corner_height

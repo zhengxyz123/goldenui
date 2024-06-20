@@ -3,8 +3,10 @@
 In this module, :py:class:`~.GUIManager` provides a way to control widgets.
 """
 
-from goldenui.widgets.base import WidgetBase
+from pyglet.graphics import Batch
 from pyglet.window import Window
+
+from goldenui.widgets.base import WidgetBase
 
 
 class GUIManager:
@@ -27,7 +29,10 @@ class GUIManager:
                 Size of the spatial hash.
         """
         self._window = window
+        self._batch = Batch()
         self._enabled = True
+        if self._enabled:
+            self._window.push_handlers(self)
         self._cell_size = cell_size
         self._cells: dict[tuple[int, int], set[WidgetBase]] = {}
         self._active_widgets: set[WidgetBase] = set()
@@ -67,6 +72,8 @@ class GUIManager:
             for i in range(min_vec[0], max_vec[0] + 1):
                 for j in range(min_vec[1], max_vec[1] + 1):
                     self._cells.setdefault((i, j), set()).add(widget)
+            if widget.batch is None:
+                widget.batch = self._batch
             widget.set_handler("on_repositioning", self.on_repositioning_hook)
 
     def remove(self, *widgets: WidgetBase):
@@ -80,15 +87,18 @@ class GUIManager:
             for cell in self._cells.values():
                 if widget in cell:
                     cell.remove(widget)
+            if widget.batch is self._batch:
+                widget.batch = None
             widget.set_handler("on_repositioning", lambda w: None)
 
     def draw(self):
         """Draw all widgets in the manager."""
-        pass
+        self._batch.draw()
 
     def on_repositioning_hook(self, widget: WidgetBase):
         self.remove(widget)
         self.add(widget)
+        self.on_mouse_motion(*self._mouse_pos, 0, 0)
 
     def on_key_press(self, symbol: int, modifiers: int):
         for cell in self._cells.values():
