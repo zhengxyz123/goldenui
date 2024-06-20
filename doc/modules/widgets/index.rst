@@ -1,5 +1,5 @@
-gletter.widgets
-===============
+goldenui.widgets
+================
 
 .. rubric:: Submodules
 

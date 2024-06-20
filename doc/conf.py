@@ -5,7 +5,7 @@ import sys
 sys.path.insert(0, os.path.abspath(".."))
 
 # Project information
-project = "gletter"
+project = "GoldenUI"
 copyright = "2024, zhengxyz123"
 author = "zhengxyz123"
 release = "0.0.1"

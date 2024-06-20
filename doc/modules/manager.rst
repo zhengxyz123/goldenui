@@ -1,7 +1,7 @@
-gletter.manager
-===============
+goldenui.manager
+================
 
-.. automodule:: gletter.manager
+.. automodule:: goldenui.manager
 
 .. autoclass:: GUIManager
 

@@ -3,8 +3,9 @@
 In this module, :py:class:`~.GUIManager` provides a way to control widgets.
 """
 
-from gletter.widgets.base import WidgetBase
 from pyglet.window import Window as _Window
+
+from goldenui.widgets.base import WidgetBase
 
 
 class GUIManager:
@@ -69,18 +70,12 @@ class GUIManager:
                     self._cells.setdefault((i, j), set()).add(widget)
             widget.set_handler("on_repositioning", self.on_repositioning_hook)
 
-    def remove(self, *widgets: WidgetBase, temporary: bool = False):
+    def remove(self, *widgets: WidgetBase):
         """Remove some added widgets.
 
         Args:
             widget:
                 Widgets want to remove.
-            temporary:
-                Remove widgets temporarily so that it can be added more quickly.
-
-        .. warning::
-            The ``temporary`` parameter is for internal usage. Developer should not turn
-            it on.
         """
         for widget in widgets:
             for cell in self._cells.values():

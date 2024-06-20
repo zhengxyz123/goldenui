@@ -1,7 +1,7 @@
-gletter.widgets.base
-====================
+goldenui.widgets.base
+=====================
 
-.. automodule:: gletter.widgets.base
+.. automodule:: goldenui.widgets.base
 
 .. autoclass:: WidgetBase
     :show-inheritance:
@@ -15,7 +15,6 @@ gletter.widgets.base
     .. autoproperty:: batch
     .. autoproperty:: group
     .. autoproperty:: enabled
-    .. autoproperty:: focused
     .. autoproperty:: aabb
     .. autoproperty:: value
 
@@ -24,8 +23,6 @@ gletter.widgets.base
     .. automethod:: _set_enabled
 
     .. rubric:: Events
-    .. automethod:: on_focus
-    .. automethod:: on_unfocus
 
     The following events are triggered by pyglet, they are described in
     :py:mod:`pyglet.window` thoroughly.
@@ -40,18 +37,5 @@ gletter.widgets.base
     .. automethod:: on_text
     .. automethod:: on_text_motion
     .. automethod:: on_text_motion_select
-
-    .. rubric:: Special Methods
-
-.. autoclass:: WidgetStyleBase
-
-    .. rubric:: Properties
-    .. autoproperty:: style_name
-    .. autoproperty:: batch
-    .. autoproperty:: group
-
-    .. rubric:: Internal Hooks
-    .. automethod:: _set_style
-    .. automethod:: _update_position
 
     .. rubric:: Special Methods

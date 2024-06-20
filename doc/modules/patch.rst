@@ -1,7 +1,7 @@
-gletter.patch
-=============
+goldenui.patch
+==============
 
-.. automodule:: gletter.patch
+.. automodule:: goldenui.patch
 
 .. autoclass:: ThreePatch
 

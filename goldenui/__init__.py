@@ -1,4 +1,4 @@
-"""gletter is a GUI framework for pyglet.
+"""GoldenUI is a GUI library for pyglet.
 """
 
 import sys
