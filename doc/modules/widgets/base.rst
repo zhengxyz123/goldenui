@@ -21,6 +21,8 @@ goldenui.widgets.base
     .. rubric:: Internal Hooks
     .. automethod:: _check_hit
     .. automethod:: _set_enabled
+    .. automethod:: _update_group
+    .. automethod:: _update_position
 
     .. rubric:: Events
 

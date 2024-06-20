@@ -1,12 +1,13 @@
-"""Base class of all widgets and widget styles.
+"""Base class of all widgets.
 """
-from typing import Any, Optional, Type
 
-from pyglet.event import EventDispatcher as _EventDispatcher
+from typing import Any, Optional
+
+from pyglet.event import EventDispatcher
 from pyglet.graphics import Batch, Group
 
 
-class WidgetBase(_EventDispatcher):
+class WidgetBase(EventDispatcher):
     """The base class of all widgets."""
 
     def __init__(
@@ -15,7 +16,10 @@ class WidgetBase(_EventDispatcher):
         y: int = 0,
         width: int = 0,
         height: int = 0,
+        *,
         enabled: bool = True,
+        batch: Optional[Batch] = None,
+        group: Optional[Group] = None,
     ):
         """Create a widget.
 
@@ -30,15 +34,18 @@ class WidgetBase(_EventDispatcher):
                 Height of the widget.
             enabled:
                 Whether allow user input.
+            batch:
+                Optional batch to add the widget to.
+            group:
+                Optional parent group of the widget.
         """
         self._x = x
         self._y = y
         self._width = width
         self._height = height
         self._enabled = enabled
-        self._focused = False
-        self._bg_group = None
-        self._fg_group = None
+        self._batch = batch
+        self._parent_group = group
 
     @property
     def x(self) -> int:
@@ -48,7 +55,7 @@ class WidgetBase(_EventDispatcher):
     @x.setter
     def x(self, value: int):
         self._x = value
-        self._style._update_position()
+        self._update_position()
         self.dispatch_event("on_repositioning", self)
 
     @property
@@ -59,7 +66,7 @@ class WidgetBase(_EventDispatcher):
     @y.setter
     def y(self, value: int):
         self._y = value
-        self._style._update_position()
+        self._update_position()
         self.dispatch_event("on_repositioning", self)
 
     @property
@@ -70,7 +77,7 @@ class WidgetBase(_EventDispatcher):
     @position.setter
     def position(self, values: tuple[int, int]):
         self._x, self._y = values
-        self._style._update_position()
+        self._update_position()
         self.dispatch_event("on_repositioning", self)
 
     @property
@@ -81,7 +88,7 @@ class WidgetBase(_EventDispatcher):
     @width.setter
     def width(self, value: int):
         self._width = value
-        self._style._update_position()
+        self._update_position()
         self.dispatch_event("on_repositioning", self)
 
     @property
@@ -92,7 +99,7 @@ class WidgetBase(_EventDispatcher):
     @height.setter
     def height(self, value: int):
         self._height = value
-        self._style._update_position()
+        self._update_position()
         self.dispatch_event("on_repositioning", self)
 
     @property
@@ -102,16 +109,17 @@ class WidgetBase(_EventDispatcher):
 
     @batch.setter
     def batch(self, new_batch: Batch):
-        self._style.batch = new_batch
+        self.batch = new_batch
 
     @property
     def group(self) -> Group:
         """Parent graphics group."""
-        return self._style.group
+        return self._parent_group
 
     @group.setter
     def group(self, new_group: Group):
-        self._style.group = new_group
+        self._parent_group = new_group
+        self._update_group()
 
     @property
     def enabled(self) -> bool:
@@ -159,7 +167,7 @@ class WidgetBase(_EventDispatcher):
         raise NotImplementedError("value depends on control type")
 
     def _check_hit(self, x: int, y: int) -> int:
-        """Internal hook for checking which part of widget has been hitted.
+        """Internal hook to check which part of widget has been hitted.
 
         Returns:
             ``-1`` means that the widget was not hitted, while other non-negative
@@ -171,13 +179,18 @@ class WidgetBase(_EventDispatcher):
             return -1
 
     def _set_enabled(self, enabled: bool):
-        """Internal hook for setting enabled.
+        """Internal hook to set enabled.
 
         Override this method to perform effects when a widget is enabled or disabled.
         """
         pass
 
-    def update_groups(self, order: int):
+    def _update_group(self):
+        """Internal hook to change group when :py:attr:`.group` is modified."""
+        pass
+
+    def _update_position(self):
+        """Internal hook to change widget's position and size."""
         pass
 
     # Events for GoldenUI.
@@ -234,4 +247,4 @@ WidgetBase.register_event_type("on_text_motion")
 WidgetBase.register_event_type("on_text_motion_select")
 
 
-__all__ = "WidgetBase", "WidgetStyleBase"
+__all__ = ("WidgetBase",)

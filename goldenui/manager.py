@@ -3,9 +3,8 @@
 In this module, :py:class:`~.GUIManager` provides a way to control widgets.
 """
 
-from pyglet.window import Window as _Window
-
 from goldenui.widgets.base import WidgetBase
+from pyglet.window import Window
 
 
 class GUIManager:
@@ -17,7 +16,7 @@ class GUIManager:
     efficiency when a large quantity of widgets are in use.
     """
 
-    def __init__(self, window: _Window, cell_size: int = 256):
+    def __init__(self, window: Window, cell_size: int = 256):
         """Create a GUIManager.
 
         Args:
@@ -88,7 +87,7 @@ class GUIManager:
         pass
 
     def on_repositioning_hook(self, widget: WidgetBase):
-        self.remove(widget, temporary=True)
+        self.remove(widget)
         self.add(widget)
 
     def on_key_press(self, symbol: int, modifiers: int):
