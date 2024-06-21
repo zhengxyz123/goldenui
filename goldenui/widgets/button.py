@@ -11,7 +11,7 @@ from pyglet.graphics import Batch, Group
 from pyglet.text import Label
 from pyglet.window import mouse
 
-from goldenui import _is_sphinx_run
+from goldenui import is_sphinx_run
 from goldenui.patch import ThreePatch
 from goldenui.resources import loader
 from goldenui.widgets.base import WidgetBase
@@ -26,7 +26,7 @@ text_button_image = {
 for status in ["normal", "hover", "pressed"]:
     for part in ["left", "middle", "right"]:
         # Without the `if` statement, sphinx will raise a warning when build doc.
-        if not _is_sphinx_run:
+        if not is_sphinx_run:
             text_button_image[status].append(
                 loader.image(f"buttons/{status}_{part}.png")
             )
@@ -141,7 +141,7 @@ class TextButton(WidgetBase):
             0,
         )
 
-    def on_mouse_press(self, x, y, buttons, modifiers):
+    def on_mouse_press(self, x: int, y: int, buttons: int, modifiers: int):
         if (
             not self._enabled
             or not self._check_hit(x, y) >= 0
@@ -151,7 +151,7 @@ class TextButton(WidgetBase):
         self._button[:] = text_button_image["pressed"]
         self._pressed = True
 
-    def on_mouse_release(self, x, y, buttons, modifiers):
+    def on_mouse_release(self, x: int, y: int, buttons: int, modifiers: int):
         if not self._enabled or not self._pressed:
             return
         self._label.color = (
@@ -162,7 +162,7 @@ class TextButton(WidgetBase):
         self._pressed = False
         self.dispatch_event("on_click")
 
-    def on_mouse_motion(self, x, y, dx, dy):
+    def on_mouse_motion(self, x: int, y: int, dx: int, dy: int):
         if not self._enabled or self._pressed:
             return
         self._label.color = (
@@ -171,7 +171,9 @@ class TextButton(WidgetBase):
         status = "hover" if self._check_hit(x, y) >= 0 else "normal"
         self._button[:] = text_button_image[status]
 
-    def on_mouse_drag(self, x, y, dx, dy, buttons, modifiers):
+    def on_mouse_drag(
+        self, x: int, y: int, dx: int, dy: int, buttons: int, modifiers: int
+    ):
         if not self._enabled or self._pressed:
             return
         self._label.color = (
@@ -180,10 +182,10 @@ class TextButton(WidgetBase):
         status = "hover" if self._check_hit(x, y) >= 0 else "normal"
         self._button[:] = text_button_image[status]
 
-    if _is_sphinx_run:
+    if is_sphinx_run:
 
         def on_click(self):
-            """The event will be triggered when release the mouse."""
+            """This event will be triggered when release the mouse."""
             pass
 
 

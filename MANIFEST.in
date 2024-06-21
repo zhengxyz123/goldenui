@@ -1,0 +1,2 @@
+recursive-exclude goldenui *.pyc
+recursive-include goldenui/resources *.png
