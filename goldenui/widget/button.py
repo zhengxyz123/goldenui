@@ -14,7 +14,7 @@ from pyglet.window import mouse
 from goldenui import is_sphinx_run
 from goldenui.patch import ThreePatch
 from goldenui.resources import loader
-from goldenui.widgets.base import WidgetBase
+from goldenui.widget.base import WidgetBase
 
 text_color_white = (255, 255, 255, 255)
 text_color_gray = (170, 170, 170, 255)
@@ -25,7 +25,7 @@ text_button_image = {
 }
 for status in ["normal", "hover", "pressed"]:
     for part in ["left", "middle", "right"]:
-        # Without the `if` statement, sphinx will raise a warning when build doc.
+        # Without the `if` statement, sphinx will raise a warning when building doc.
         if not is_sphinx_run:
             text_button_image[status].append(
                 loader.image(f"buttons/{status}_{part}.png")

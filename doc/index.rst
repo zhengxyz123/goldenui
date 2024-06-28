@@ -25,4 +25,4 @@ If it is your first time hearing about pyglet and GoldenUI, we suggest you read
 
     modules/manager
     modules/patch
-    modules/widgets/index
+    modules/widget/index

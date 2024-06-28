@@ -1,7 +1,7 @@
-goldenui.widgets.button
+goldenui.widget.button
 =======================
 
-.. automodule:: goldenui.widgets.button
+.. automodule:: goldenui.widget.button
 
 .. autoclass:: TextButton
     :show-inheritance:
@@ -9,8 +9,8 @@ goldenui.widgets.button
     .. rubric:: Properties
     .. autoproperty:: text
     .. autoproperty:: value
-    
+
     .. rubric:: Events
     .. automethod:: on_click
-    
+
     .. rubric:: Special Methods

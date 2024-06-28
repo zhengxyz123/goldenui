@@ -7,7 +7,7 @@ goldenui.manager
 
     .. rubric:: Properties
     .. autoproperty:: enabled
-    
+
     .. rubric:: Methods
     .. automethod:: add
     .. automethod:: remove

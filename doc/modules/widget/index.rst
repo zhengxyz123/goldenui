@@ -1,4 +1,4 @@
-goldenui.widgets
+goldenui.widget
 ================
 
 .. rubric:: Submodules

@@ -6,7 +6,7 @@ In this module, :py:class:`~.GUIManager` provides a way to control widgets.
 from pyglet.graphics import Batch
 from pyglet.window import Window
 
-from goldenui.widgets.base import WidgetBase
+from goldenui.widget.base import WidgetBase
 
 
 class GUIManager:

@@ -186,7 +186,7 @@ class WidgetBase(EventDispatcher):
         """
         pass
 
-    def _update_group(self):
+    def _update_batch(self):
         """Internal hook to change batch when :py:attr:`.batch` is modified."""
         pass
 

@@ -13,11 +13,11 @@ goldenui.patch
     .. autoproperty:: height
     .. autoproperty:: batch
     .. autoproperty:: group
-    
+
     .. rubric:: Methods
     .. automethod:: draw
     .. automethod:: update
-    
+
     .. rubric:: Special Methods
 
 .. autoclass:: NinePatch
@@ -31,9 +31,9 @@ goldenui.patch
     .. autoproperty:: height
     .. autoproperty:: batch
     .. autoproperty:: group
-    
+
     .. rubric:: Methods
     .. automethod:: draw
     .. automethod:: update
-    
+
     .. rubric:: Special Methods

@@ -2,7 +2,6 @@
 """
 
 import sys
-from dataclasses import dataclass
 
 #: The release version.
 version = "0.0.1"

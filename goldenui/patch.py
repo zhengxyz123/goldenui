@@ -4,7 +4,7 @@ Patchs are like :py:class:`~pyglet.sprite.Sprite`, but they split a whole image 
 several parts to avoid distortion when scaling them.
 """
 
-from typing import Optional
+from typing import Iterable, Optional
 
 from pyglet.graphics import Batch, Group
 from pyglet.image import AbstractImage
@@ -55,7 +55,7 @@ class ThreePatch:
         self._sprites.append(Sprite(right, batch=batch, group=group))
         self._update()
 
-    def __getitem__(self, key: int | slice) -> Sprite | tuple[Sprite, ...]:
+    def __getitem__(self, key: int | slice) -> Sprite | list[Sprite]:
         if isinstance(key, int):
             return self._sprites[key]
         elif isinstance(key, slice):
@@ -63,7 +63,9 @@ class ThreePatch:
         else:
             raise ValueError("unsupported operation")
 
-    def __setitem__(self, key: int, value: AbstractImage | tuple[AbstractImage, ...]):
+    def __setitem__(
+        self, key: int | slice, value: AbstractImage | Iterable[AbstractImage]
+    ):
         if isinstance(key, int) and isinstance(value, AbstractImage):
             self._sprites[key].image = value
         elif isinstance(key, slice):
@@ -267,7 +269,7 @@ class NinePatch:
         self._sprites[(2, 2)] = Sprite(br, batch=batch, group=group)
         self._update()
 
-    def __getitem__(self, key: tuple[int, ...]) -> Sprite:
+    def __getitem__(self, key: slice) -> Sprite:
         return self._sprites[key]
 
     @property
