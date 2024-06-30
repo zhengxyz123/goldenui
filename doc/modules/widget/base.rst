@@ -1,5 +1,5 @@
 goldenui.widget.base
-=====================
+====================
 
 .. automodule:: goldenui.widget.base
 

@@ -1,5 +1,5 @@
-goldenui.widget
-===============
+goldenui.widget.container
+=========================
 
 .. rubric:: Submodules
 
@@ -7,5 +7,3 @@ goldenui.widget
     :maxdepth: 1
 
     base
-    container/index
-    button

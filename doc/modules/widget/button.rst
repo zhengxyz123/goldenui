@@ -1,5 +1,5 @@
 goldenui.widget.button
-=======================
+======================
 
 .. automodule:: goldenui.widget.button
 

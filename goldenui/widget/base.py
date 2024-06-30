@@ -46,6 +46,7 @@ class WidgetBase(EventDispatcher):
         self._enabled = enabled
         self._batch = batch
         self._parent_group = group
+        self._manager = None
 
     @property
     def x(self) -> int:
