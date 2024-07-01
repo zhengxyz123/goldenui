@@ -1,18 +1,20 @@
 from typing import Optional
 
-from pyglet import gl
+from pyglet.gl import GL_SCISSOR_TEST, glEnable, glDisable, glScissor
 from pyglet.graphics import Group
-from pyglet.image import get_buffer_manager
+from pyglet.math import Mat4, Vec3
+from pyglet.window import Window
 
 
-class ViewportGroup(Group):
+class ContainerGroup(Group):
 
     def __init__(
-        self, area: tuple[int], order: int = 0, parent: Optional[Group] = None
+        self, window: Window, area: tuple[int], order: int = 0, parent: Optional[Group] = None
     ):
         super().__init__(order, parent)
+        self._window = window
         self._area = area
-        self._prev_area = None
+        self._prev_view = None
 
     @property
     def area(self) -> tuple[int]:
@@ -23,11 +25,15 @@ class ViewportGroup(Group):
         self._area = values
 
     def set_state(self):
-        self._prev_area = get_buffer_manager().get_viewport()
-        gl.glViewport(*self._area)
+        self._prev_view = self._window.view
+        glEnable(GL_SCISSOR_TEST)
+        glScissor(*self._area)
+        self._window.view = Mat4.from_translation(Vec3(*self._area[:2], 0))
 
     def unset_state(self):
-        gl.glViewport(*self._prev_area)
+        pass
+        self._window.view = self._prev_view
+        glDisable(GL_SCISSOR_TEST)
 
 
-__all__ = ("ViewportGroup",)
+__all__ = ("ContainerGroup",)
