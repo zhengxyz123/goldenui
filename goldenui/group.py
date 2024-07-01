@@ -1,6 +1,9 @@
+"""Groups for internal usage.
+"""
+
 from typing import Optional
 
-from pyglet.gl import GL_SCISSOR_TEST, glEnable, glDisable, glScissor
+from pyglet.gl import GL_SCISSOR_TEST, glDisable, glEnable, glScissor
 from pyglet.graphics import Group
 from pyglet.math import Mat4, Vec3
 from pyglet.window import Window
@@ -9,7 +12,11 @@ from pyglet.window import Window
 class ContainerGroup(Group):
 
     def __init__(
-        self, window: Window, area: tuple[int], order: int = 0, parent: Optional[Group] = None
+        self,
+        window: Window,
+        area: tuple[int],
+        order: int = 0,
+        parent: Optional[Group] = None,
     ):
         super().__init__(order, parent)
         self._window = window

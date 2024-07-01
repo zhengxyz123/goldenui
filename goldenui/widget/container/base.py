@@ -1,3 +1,6 @@
+"""Base class of all containers.
+"""
+
 from typing import Optional
 
 from pyglet.graphics import Batch, Group
@@ -44,7 +47,9 @@ class ContainerBase(WidgetBase):
         """
         super().__init__(x, y, width, height, enabled=enabled, batch=batch, group=group)
         self._window = window
-        self._group = ContainerGroup(self._window, (x, y, width, height), parent=self._parent_group)
+        self._group = ContainerGroup(
+            self._window, (x, y, width, height), parent=self._parent_group
+        )
         self._widgets: list[WidgetBase] = []
 
     def _update_batch(self):

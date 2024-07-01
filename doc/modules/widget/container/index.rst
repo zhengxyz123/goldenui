@@ -7,3 +7,5 @@ goldenui.widget.container
     :maxdepth: 1
 
     base
+
+.. automodule:: goldenui.widget.container
