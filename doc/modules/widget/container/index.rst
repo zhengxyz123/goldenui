@@ -6,6 +6,7 @@ goldenui.widget.container
 .. toctree::
     :maxdepth: 1
 
-    base
+    base <base>
+    center <center>
 
 .. automodule:: goldenui.widget.container

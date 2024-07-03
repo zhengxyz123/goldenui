@@ -16,12 +16,14 @@ If it is your first time hearing about pyglet and GoldenUI, we suggest you read
 .. toctree::
     :maxdepth: 1
     :caption: Programming Guide
+    :hidden:
 
     programming_guide/00_getting_started
 
 .. toctree::
     :maxdepth: 1
     :caption: API Reference
+    :hidden:
 
     modules/manager
     modules/patch

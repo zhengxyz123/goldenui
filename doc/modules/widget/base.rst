@@ -37,6 +37,7 @@ goldenui.widget.base
     .. automethod:: on_mouse_drag
     .. automethod:: on_mouse_motion
     .. automethod:: on_mouse_scroll
+    .. automethod:: on_resize
     .. automethod:: on_text
     .. automethod:: on_text_motion
     .. automethod:: on_text_motion_select

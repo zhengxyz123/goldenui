@@ -6,6 +6,6 @@ goldenui.widget
 .. toctree::
     :maxdepth: 1
 
-    base
-    container/index
-    button
+    base <base>
+    button <button>
+    container <container/index>

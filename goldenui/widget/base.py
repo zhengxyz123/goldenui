@@ -229,6 +229,9 @@ class WidgetBase(EventDispatcher):
     def on_mouse_scroll(self, x: int, y: int, scroll_x: int, scroll_y: int):
         pass
 
+    def on_resize(self, width: int, height: int):
+        pass
+
     def on_text(self, text: str):
         pass
 
@@ -239,15 +242,14 @@ class WidgetBase(EventDispatcher):
         pass
 
 
-WidgetBase.register_event_type("on_focus")
-WidgetBase.register_event_type("on_unfocus")
-WidgetBase.register_event_type("on_repositioning")
 WidgetBase.register_event_type("on_key_press")
 WidgetBase.register_event_type("on_key_release")
 WidgetBase.register_event_type("on_mouse_press")
 WidgetBase.register_event_type("on_mouse_release")
 WidgetBase.register_event_type("on_mouse_drag")
 WidgetBase.register_event_type("on_mouse_motion")
+WidgetBase.register_event_type("on_repositioning")
+WidgetBase.register_event_type("on_resize")
 WidgetBase.register_event_type("on_text")
 WidgetBase.register_event_type("on_text_motion")
 WidgetBase.register_event_type("on_text_motion_select")
