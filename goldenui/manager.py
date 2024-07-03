@@ -63,7 +63,7 @@ class GUIManager:
         """Add some widgets to the manager.
 
         Args:
-            widget:
+            widgets:
                 Widgets want to add.
         """
         for widget in widgets:
@@ -80,7 +80,7 @@ class GUIManager:
         """Remove some added widgets.
 
         Args:
-            widget:
+            widgets:
                 Widgets want to remove.
         """
         for widget in widgets:

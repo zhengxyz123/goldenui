@@ -70,7 +70,7 @@ class ContainerBase(WidgetBase):
         """Add some widgets to the container.
 
         Args:
-            widget:
+            widgets:
                 Widgets want to add.
         """
         for widget in widgets:
@@ -83,7 +83,7 @@ class ContainerBase(WidgetBase):
         """Remove some added widgets.
 
         Args:
-            widget:
+            widgets:
                 Widgets want to remove.
         """
         for widget in widgets:
