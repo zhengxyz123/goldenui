@@ -57,8 +57,8 @@ class CenterContainer(ContainerBase):
         super().__init__(
             window, x, y, width, height, enabled=enabled, batch=batch, group=group
         )
-        widget.batch = batch
-        widget.group = group
+        widget.batch = self._batch
+        widget.group = self._group
         self._widgets.append(widget)
 
     def _update_position(self):
