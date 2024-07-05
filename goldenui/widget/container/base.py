@@ -89,6 +89,18 @@ class ContainerBase(WidgetBase):
         for widget in widgets:
             if widget in self._widgets:
                 self._widgets.remove(widget)
+    
+    def on_key_press(self, symbol: int, modifiers: int):
+        if self._check_hit(x, y) < 0:
+            return
+        for widget in self._widgets:
+            widget.dispatch_event("on_key_press", symbol, modifiers)
+
+    def on_key_release(self, symbol: int, modifiers: int):
+        if self._check_hit(x, y) < 0:
+            return
+        for widget in self._widgets:
+            widget.dispatch_event("on_key_release", symbol, modifiers)
 
     def on_mouse_press(self, x: int, y: int, buttons: int, modifiers: int):
         if self._check_hit(x, y) < 0:
@@ -119,6 +131,13 @@ class ContainerBase(WidgetBase):
         x, y = x - self._x, y - self._y
         for widget in self._widgets:
             widget.dispatch_event("on_mouse_motion", x, y, dx, dy)
+    
+    def on_mouse_scroll(self, x: int, y: int, scroll_x: int, scroll_y: int):
+        if self._check_hit(x, y) < 0:
+            return
+        x, y = x - self._x, y - self._y
+        for widget in self._widgets:
+            widget.dispatch_event("on_mouse_scroll", x, y, scroll_x, scroll_y)
 
 
 __all__ = ("ContainerBase",)

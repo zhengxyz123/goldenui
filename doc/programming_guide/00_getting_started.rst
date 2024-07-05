@@ -8,13 +8,13 @@ Install the Library
 
 GoldenUI can be downloaded and installed by ``pip``:
 
-.. code-block:: sh
+.. code:: sh
 
     pip install goldenui
 
 Alternatively, you can clone the source code from GitHub and install it manually:
 
-.. code-block:: sh
+.. code:: sh
 
     git clone git@github.com:zhengxyz123@goldenui.git
     cd goldenui
@@ -49,14 +49,35 @@ After that, we need to set up OpenGL since GoldenUI uses pixel style widgets::
 
 Then, create a :py:class:`~pyglet.window.Window` and a :py:class:`~goldenui.manager.GUIManager`::
 
-    window = Window(400, 300, "Example")
+    window = Window(400, 300, "Getting Started")
     manager = GUIManager(window)
 
 And create a :py:class:`~goldenui.widget.button.TextButton` located at center of the window
-with text ``Hello`` of size 20::
+with text "Hello" of size 20::
 
     button = TextButton("Hello", 110, 120, 180, 60, font_size=20)
 
 The ``button`` must be added to ``manager`` in order to work::
 
     manager.add(button)
+
+After button has been pressed, the :py:attr:`~goldenui.widget.button.TextButton.on_click` event
+is triggered. We can override this event to move the button randomly::
+
+    @button.event
+    def on_click():
+        x, y = randint(0, 220), randint(0, 240)
+        button.position = x, y
+
+Don't forget to draw widgets::
+
+    @window.event
+    def on_draw():
+        window.clear()
+        manager.draw()
+
+Finally, run the program::
+
+    if __name__ == "__main__":
+        clock.schedule_interval(window.draw, 1 / 60)
+        app.run()

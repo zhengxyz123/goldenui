@@ -33,12 +33,12 @@ class ContainerGroup(Group):
 
     def set_state(self):
         self._prev_view = self._window.view
-        real_pos = self._window.view @ Vec4(*self._area[:2], 0, 1)
-        real_area = map(int, (*real_pos[:2], *self._area[2:]))
         self._window.view @= Mat4.from_translation(Vec3(*self._area[:2], 0))
+        now_pos = self._window.view @ Vec4(*self._area[:2], 0, 1)
+        now_area = tuple(map(int, (*now_pos[:2], *self._area[2:])))
         if not glIsEnabled(GL_SCISSOR_TEST):
             glEnable(GL_SCISSOR_TEST)
-        glScissor(*real_area)
+        glScissor(*now_area)
 
     def unset_state(self):
         if glIsEnabled(GL_SCISSOR_TEST):
