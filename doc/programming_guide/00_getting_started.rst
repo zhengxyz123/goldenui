@@ -81,3 +81,6 @@ Finally, run the program::
     if __name__ == "__main__":
         clock.schedule_interval(window.draw, 1 / 60)
         app.run()
+
+You can find the entire program in the `start.py <https://github.com/zhengxyz123/goldenui/blob/
+master/examples/prog_guides/start.py>`_ file.
