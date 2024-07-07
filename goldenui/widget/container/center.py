@@ -1,7 +1,7 @@
 """A container to center the widget in it.
 """
 
-from typing import Optional
+from typing import Optional, Union
 
 from pyglet.graphics import Batch, Group
 from pyglet.window import Window
@@ -14,7 +14,7 @@ class CenterContainer(ContainerBase):
 
     def __init__(
         self,
-        window: Window,
+        toplevel: Union[Window, "ContainerBase"],
         widget: WidgetBase,
         x: int = 0,
         y: int = 0,
@@ -29,8 +29,8 @@ class CenterContainer(ContainerBase):
         """Create a CenterContainer.
 
         Args:
-            window (:py:class:`~pyglet.window.Window`):
-                Window this container belongs to.
+            toplevel:
+                Window or container this container belongs to.
             widget:
                 Widget that want to center.
             x:
@@ -50,16 +50,16 @@ class CenterContainer(ContainerBase):
             group:
                 Optional parent group of the container.
         """
-        self._filled = filled
-        if self._filled:
-            x, y = 0, 0
-            width, height = window.width, window.height
         super().__init__(
-            window, x, y, width, height, enabled=enabled, batch=batch, group=group
+            toplevel, x, y, width, height, enabled=enabled, batch=batch, group=group
         )
         widget.batch = self._batch
         widget.group = self._group
         self._widgets.append(widget)
+        self._filled = filled
+        if self._filled:
+            self.x, self.y = 0, 0
+            self.width, self.height = self._window.width, self._window.height
 
     def _update_position(self):
         if self._filled:
@@ -79,7 +79,10 @@ class CenterContainer(ContainerBase):
     def on_resize(self, width: int, height: int):
         if not self._filled:
             return
-        self.width, self.height = width, height
+        if self._toplevel is None:
+            self.width, self.height = width, height
+        else:
+            self.width, self.height = self._toplevel.width, self._toplevel.height
 
 
 __all__ = ("CenterContainer",)

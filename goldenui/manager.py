@@ -22,7 +22,7 @@ class GUIManager:
         """Create a GUIManager.
 
         Args:
-            window (:py:class:`~pyglet.window.Window`):
+            window:
                 Manager will receive events from this window and these events will be
                 passed on to every added widgets.
             cell_size:

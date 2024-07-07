@@ -1,7 +1,7 @@
 """Base class of all containers.
 """
 
-from typing import Optional
+from typing import Optional, Union
 
 from pyglet.graphics import Batch, Group
 from pyglet.window import Window
@@ -15,7 +15,7 @@ class ContainerBase(WidgetBase):
 
     def __init__(
         self,
-        window: Window,
+        toplevel: Union[Window, "ContainerBase"],
         x: int = 0,
         y: int = 0,
         width: int = 0,
@@ -28,8 +28,8 @@ class ContainerBase(WidgetBase):
         """Create a container.
 
         Args:
-            window (:py:class:`~pyglet.window.Window`):
-                Window this container belongs to.
+            toplevel:
+                Window or container this container belongs to.
             x:
                 X coordinate of the container.
             y:
@@ -46,7 +46,12 @@ class ContainerBase(WidgetBase):
                 Optional parent group of the container.
         """
         super().__init__(x, y, width, height, enabled=enabled, batch=batch, group=group)
-        self._window = window
+        if isinstance(toplevel, Window):
+            self._toplevel = None
+            self._window = toplevel
+        else:
+            self._toplevel = toplevel
+            self._window = toplevel._window
         self._group = ContainerGroup(
             self._window, (x, y, width, height), parent=self._parent_group
         )
@@ -64,7 +69,16 @@ class ContainerBase(WidgetBase):
             widget.group = self._group
 
     def _update_position(self):
-        self._group.area = (self._x, self._y, self._width, self._height)
+        if self._toplevel is None:
+            self._group.area = (self._x, self._y, self._width, self._height)
+        else:
+            tl_area = self._toplevel._group.area
+            now_x, now_y = tl_area[0] + self._x, tl_area[1] + self._y
+            now_w = min(self._width, tl_area[2] - self._x)
+            now_h = min(self._height, tl_area[3] - self._y)
+            self._group.area = (now_x, now_y, now_w, now_h)
+        for widget in self._widgets:
+            widget.position = widget.position
 
     def add(self, *widgets: WidgetBase):
         """Add some widgets to the container.
@@ -89,7 +103,7 @@ class ContainerBase(WidgetBase):
         for widget in widgets:
             if widget in self._widgets:
                 self._widgets.remove(widget)
-    
+
     def on_key_press(self, symbol: int, modifiers: int):
         if self._check_hit(x, y) < 0:
             return
@@ -131,7 +145,7 @@ class ContainerBase(WidgetBase):
         x, y = x - self._x, y - self._y
         for widget in self._widgets:
             widget.dispatch_event("on_mouse_motion", x, y, dx, dy)
-    
+
     def on_mouse_scroll(self, x: int, y: int, scroll_x: int, scroll_y: int):
         if self._check_hit(x, y) < 0:
             return

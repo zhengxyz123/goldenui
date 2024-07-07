@@ -15,6 +15,7 @@ window.set_minimum_size(400, 300)
 manager = GUIManager(window)
 button = TextButton("Hello", width=180, height=60, font_size=20)
 container = CenterContainer(window, button, filled=True)
+window.push_handlers(on_resize=container.on_resize)
 manager.add(container)
 
 
@@ -22,11 +23,6 @@ manager.add(container)
 def on_draw():
     window.clear()
     manager.draw()
-
-
-@window.event
-def on_resize(width: int, height: int):
-    container.dispatch_event("on_resize", width, height)
 
 
 if __name__ == "__main__":

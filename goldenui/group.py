@@ -5,7 +5,7 @@ from typing import Optional
 
 from pyglet.gl import GL_SCISSOR_TEST, glDisable, glEnable, glIsEnabled, glScissor
 from pyglet.graphics import Group
-from pyglet.math import Mat4, Vec3, Vec4
+from pyglet.math import Mat4, Vec3
 from pyglet.window import Window
 
 
@@ -32,18 +32,16 @@ class ContainerGroup(Group):
         self._area = values
 
     def set_state(self):
-        self._prev_view = self._window.view
-        self._window.view @= Mat4.from_translation(Vec3(*self._area[:2], 0))
-        now_pos = self._window.view @ Vec4(*self._area[:2], 0, 1)
-        now_area = tuple(map(int, (*now_pos[:2], *self._area[2:])))
         if not glIsEnabled(GL_SCISSOR_TEST):
             glEnable(GL_SCISSOR_TEST)
-        glScissor(*now_area)
+        glScissor(*self._area)
+        self._prev_view = self._window.view
+        self._window.view = Mat4.from_translation(Vec3(*self._area[:2], 0))
 
     def unset_state(self):
+        self._window.view = self._prev_view
         if glIsEnabled(GL_SCISSOR_TEST):
             glDisable(GL_SCISSOR_TEST)
-        self._window.view = self._prev_view
 
 
 __all__ = ("ContainerGroup",)
