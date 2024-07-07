@@ -14,7 +14,7 @@ class ContainerGroup(Group):
     def __init__(
         self,
         window: Window,
-        area: tuple[int],
+        area: tuple[int, ...],
         order: int = 0,
         parent: Optional[Group] = None,
     ):
@@ -24,11 +24,11 @@ class ContainerGroup(Group):
         self._prev_view = None
 
     @property
-    def area(self) -> tuple[int]:
+    def area(self) -> tuple[int, ...]:
         return self._area
 
     @area.setter
-    def area(self, values: tuple[int]):
+    def area(self, values: tuple[int, ...]):
         self._area = values
 
     def set_state(self):

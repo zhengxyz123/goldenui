@@ -112,6 +112,10 @@ class TextButton(WidgetBase):
     def value(self) -> bool:
         """Whether user is clicked the button."""
         return self._pressed
+    
+    @value.setter
+    def value(self, new_value: bool):
+        pass
 
     def _set_enabled(self, enabled: bool):
         if enabled:

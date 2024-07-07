@@ -63,7 +63,9 @@ class ContainerBase(WidgetBase):
 
     def _update_group(self):
         self._group = ContainerGroup(
-            (self._x, self._y, self._width, self._height), parent=self._parent_group
+            self._window,
+            (self._x, self._y, self._width, self._height),
+            parent=self._parent_group,
         )
         for widget in self._widgets:
             widget.group = self._group
@@ -105,14 +107,10 @@ class ContainerBase(WidgetBase):
                 self._widgets.remove(widget)
 
     def on_key_press(self, symbol: int, modifiers: int):
-        if self._check_hit(x, y) < 0:
-            return
         for widget in self._widgets:
             widget.dispatch_event("on_key_press", symbol, modifiers)
 
     def on_key_release(self, symbol: int, modifiers: int):
-        if self._check_hit(x, y) < 0:
-            return
         for widget in self._widgets:
             widget.dispatch_event("on_key_release", symbol, modifiers)
 
