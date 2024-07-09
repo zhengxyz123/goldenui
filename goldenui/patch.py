@@ -6,7 +6,8 @@ several parts to avoid distortion when scaling them.
 Patches are for internal use only.
 """
 
-from typing import Iterable, Optional
+from collections.abc import Sequence
+from typing import Optional
 
 from pyglet.graphics import Batch, Group
 from pyglet.image import AbstractImage
@@ -66,11 +67,11 @@ class ThreePatch:
             raise ValueError("unsupported operation")
 
     def __setitem__(
-        self, key: int | slice, value: AbstractImage | Iterable[AbstractImage]
+        self, key: int | slice, value: AbstractImage | Sequence[AbstractImage]
     ):
         if isinstance(key, int) and isinstance(value, AbstractImage):
             self._sprites[key].image = value
-        elif isinstance(key, slice):
+        elif isinstance(key, slice) and not isinstance(value, AbstractImage):
             for i in [0, 1, 2][key]:
                 self._sprites[i].image = value[i]
         else:
@@ -128,22 +129,22 @@ class ThreePatch:
         self._update()
 
     @property
-    def batch(self) -> Batch:
+    def batch(self) -> Optional[Batch]:
         """Graphics batch."""
         return self._sprites[0].batch
 
     @batch.setter
-    def batch(self, batch: Batch):
+    def batch(self, batch: Optional[Batch]):
         for sprite in self._sprites:
             sprite.batch = batch
 
     @property
-    def group(self) -> Group:
+    def group(self) -> Optional[Group]:
         """Parent graphics group."""
         return self._sprites[0].group
 
     @group.setter
-    def group(self, group: Group):
+    def group(self, group: Optional[Group]):
         for sprite in self._sprites:
             sprite.group = group
 
@@ -335,22 +336,22 @@ class NinePatch:
         self._update()
 
     @property
-    def batch(self) -> Batch:
+    def batch(self) -> Optional[Batch]:
         """Graphics batch."""
         return self._sprites[(0, 0)].batch
 
     @batch.setter
-    def batch(self, batch: Batch):
+    def batch(self, batch: Optional[Batch]):
         for sprite in self._sprites.values():
             sprite.batch = batch
 
     @property
-    def group(self) -> Group:
+    def group(self) -> Optional[Group]:
         """Parent graphics group."""
         return self._sprites[(0, 0)].group
 
     @group.setter
-    def group(self, group: Group):
+    def group(self, group: Optional[Group]):
         for sprite in self._sprites.values():
             sprite.group = group
 

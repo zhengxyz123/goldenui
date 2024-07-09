@@ -104,22 +104,22 @@ class WidgetBase(EventDispatcher):
         self.dispatch_event("on_repositioning", self)
 
     @property
-    def batch(self) -> Batch:
+    def batch(self) -> Optional[Batch]:
         """Graphics batch."""
         return self._batch
 
     @batch.setter
-    def batch(self, new_batch: Batch):
+    def batch(self, new_batch: Optional[Batch]):
         self._batch = new_batch
         self._update_batch()
 
     @property
-    def group(self) -> Group:
+    def group(self) -> Optional[Group]:
         """Parent graphics group."""
         return self._parent_group
 
     @group.setter
-    def group(self, new_group: Group):
+    def group(self, new_group: Optional[Group]):
         self._parent_group = new_group
         self._update_group()
 

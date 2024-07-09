@@ -21,7 +21,7 @@ class ContainerGroup(Group):
         super().__init__(order, parent)
         self._window = window
         self._area = area
-        self._prev_view = None
+        self._prev_view = Mat4()
 
     @property
     def area(self) -> tuple[int, ...]:
@@ -36,7 +36,7 @@ class ContainerGroup(Group):
             glEnable(GL_SCISSOR_TEST)
         glScissor(*self._area)
         self._prev_view = self._window.view
-        self._window.view = Mat4.from_translation(Vec3(*self._area[:2], 0))
+        self._window.view = Mat4.from_translation(Vec3(*self._area[:2]))
 
     def unset_state(self):
         self._window.view = self._prev_view
