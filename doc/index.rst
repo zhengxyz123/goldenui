@@ -18,7 +18,8 @@ documentation <https://pyglet.readthedocs.io>`_ first.
     :hidden:
 
     programming_guide/00_getting_started
-    programming_guide/01_manager_and_widgets
+    programming_guide/01_widgets_and_manager
+    programming_guide/02_handling_events
 
 .. toctree::
     :maxdepth: 1
