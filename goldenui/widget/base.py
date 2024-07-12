@@ -128,11 +128,6 @@ class WidgetBase(EventDispatcher):
         """Whether this widget is enabled.
 
         To react to changes in this value, override :py:meth:`._set_enabled` on widgets.
-        For example, you may want to cue the user by:
-
-        * Playing an animation and/or sound
-        * Setting a highlight color
-        * Displaying a toast or notification
         """
         return self._enabled
 
@@ -154,19 +149,19 @@ class WidgetBase(EventDispatcher):
 
     @property
     def value(self) -> Any:
-        """The Widget's value.
+        """The widget's value.
 
-        This property allows you to set the value of a Widget directly, without any user
+        This property allows you to set the value of a widget directly, without any user
         input. This could be used, for example, to restore widgets to a previous state,
         or if some event in your program is meant to naturally change the same value that
         the widget controls. Note that events are not dispatched when changing this
         property.
         """
-        raise NotImplementedError("value depends on control type")
+        raise NotImplementedError("value depends on widget type")
 
     @value.setter
     def value(self, value: Any):
-        raise NotImplementedError("value depends on control type")
+        raise NotImplementedError("value depends on widget type")
 
     def _check_hit(self, x: int, y: int) -> int:
         """Internal hook to check which part of widget has been hitted.

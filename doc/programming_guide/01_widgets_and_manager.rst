@@ -6,6 +6,12 @@ for user interaction in a window. They are all inherited from
 :py:class:`~pyglet.event.EventDispatcher` and :py:class:`~goldenui.widget.base.WidgetBase`. Unlike
 :py:mod:`pyglet.gui`, GoldenUI provides more widgets and a default appearance.
 
+You can get and set the position and size of a widget using the ``x``, ``y``, ``position``,
+``width`` and ``height`` properties.
+
+The ``value`` property indicates the current state of the widget, e.g. whether the button is
+pressed or not. Its value has different meanings in different widgets.
+
 Widgets are deeply bound to pyglet's event system. So it is important to understand how event
 handling and dispatching work in pyglet. :ref:`handling_events` section will give you a basic
 understanding.
