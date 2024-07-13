@@ -67,6 +67,7 @@ class ContainerBase(WidgetBase):
             (self._x, self._y, self._width, self._height),
             parent=self._parent_group,
         )
+        self._update_position()
         for widget in self._widgets:
             widget.group = self._group
 

@@ -26,3 +26,5 @@ hook-dirs = "goldenui.__pyinstaller:get_hook_dirs"
 
 [tool.isort]
 profile = "black"
+
+[tool.pyright]

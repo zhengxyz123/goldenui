@@ -1,6 +1,6 @@
 import sys
 
-from pyglet.image import TextureRegion
+from pyglet.image import Texture, TextureRegion
 from pyglet.resource import Loader
 
 
@@ -12,9 +12,9 @@ class _ResourcesLoader:
         else:
             path = "@goldenui.resources"
             self._frozen = False
-        self.loader = Loader(path)
+        self.loader = Loader([path])
 
-    def image(self, path: str, **kwargs) -> TextureRegion:
+    def image(self, path: str, **kwargs) -> Texture | TextureRegion:
         return self.loader.image(path, **kwargs)
 
 

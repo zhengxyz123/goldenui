@@ -44,7 +44,7 @@ class TextButton(WidgetBase):
         height: int = 0,
         *,
         enabled: bool = True,
-        font_name: Optional[list[str] | str] = None,
+        font_name: Optional[str] = None,
         font_size: Optional[int] = None,
         batch: Optional[Batch] = None,
         group: Optional[Group] = None,
