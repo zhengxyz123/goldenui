@@ -84,3 +84,16 @@ Finally, run the program::
 
 You can find the entire program in the `start.py <https://github.com/zhengxyz123/goldenui/blob/
 master/examples/prog_guides/start.py>`_ file.
+
+Find More examples
+------------------
+
+In addition to the small example above, we have provided many more examples for learning.
+
+You can clone the repository using Git and run examples:
+
+.. code:: sh
+
+    git clone git@github.com:zhengxyz123@goldenui.git
+    cd goldenui
+    python -m examples.prog_guides.start

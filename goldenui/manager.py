@@ -19,7 +19,7 @@ class GUIManager:
     """
 
     def __init__(self, window: Window, cell_size: int = 256):
-        """Create a GUIManager.
+        """Create a ``GUIManager``.
 
         Args:
             window:

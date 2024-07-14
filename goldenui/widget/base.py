@@ -21,7 +21,7 @@ class WidgetBase(EventDispatcher):
         batch: Optional[Batch] = None,
         group: Optional[Group] = None,
     ):
-        """Create a widget.
+        """Create a ``WidgetBase``.
 
         Args:
             x:

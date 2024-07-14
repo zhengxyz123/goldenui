@@ -27,7 +27,7 @@ class ThreePatch:
         batch: Optional[Batch] = None,
         group: Optional[Group] = None,
     ):
-        """Create a ThreePatch.
+        """Create a ``ThreePatch``.
 
         Args:
             x:
@@ -220,7 +220,7 @@ class NinePatch:
         batch: Optional[Batch] = None,
         group: Optional[Group] = None,
     ):
-        """Create a NinePatch.
+        """Create a ``NinePatch``.
 
         Args:
             x:

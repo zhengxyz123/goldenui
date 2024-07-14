@@ -1,20 +1,21 @@
 """A container to center the widget in it.
 """
 
-from typing import Optional, Union
+from typing import Optional
 
 from pyglet.graphics import Batch, Group
 from pyglet.window import Window
 
 from goldenui.widget.base import WidgetBase
 from goldenui.widget.container.base import ContainerBase
+from goldenui.util import space
 
 
 class CenterContainer(ContainerBase):
 
     def __init__(
         self,
-        toplevel: Union[Window, "ContainerBase"],
+        toplevel: Window | ContainerBase,
         widget: WidgetBase,
         x: int = 0,
         y: int = 0,
@@ -23,10 +24,11 @@ class CenterContainer(ContainerBase):
         *,
         filled: bool = False,
         enabled: bool = True,
+        padding: space = space(0),
         batch: Optional[Batch] = None,
         group: Optional[Group] = None,
     ):
-        """Create a CenterContainer.
+        """Create a ``CenterContainer``.
 
         Args:
             toplevel:
@@ -45,13 +47,23 @@ class CenterContainer(ContainerBase):
                 Whether filled the window.
             enabled:
                 Whether allow user input.
+            padding:
+                Padding area of the container.
             batch:
                 Optional batch to add the container to.
             group:
                 Optional parent group of the container.
         """
         super().__init__(
-            toplevel, x, y, width, height, enabled=enabled, batch=batch, group=group
+            toplevel,
+            x,
+            y,
+            width,
+            height,
+            enabled=enabled,
+            padding=padding,
+            batch=batch,
+            group=group,
         )
         widget.batch = self._batch
         widget.group = self._group

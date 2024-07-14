@@ -8,6 +8,7 @@ from pyglet.window import Window
 
 from goldenui.group import ContainerGroup
 from goldenui.widget.base import WidgetBase
+from goldenui.util import space
 
 
 class ContainerBase(WidgetBase):
@@ -22,10 +23,11 @@ class ContainerBase(WidgetBase):
         height: int = 0,
         *,
         enabled: bool = True,
+        padding: space = space(0),
         batch: Optional[Batch] = None,
         group: Optional[Group] = None,
     ):
-        """Create a container.
+        """Create a ``ContainerBase``.
 
         Args:
             toplevel:
@@ -40,6 +42,8 @@ class ContainerBase(WidgetBase):
                 Height of the container.
             enabled:
                 Whether allow user input.
+            padding:
+                Padding area of the container.
             batch:
                 Optional batch to add the container to.
             group:
@@ -52,10 +56,20 @@ class ContainerBase(WidgetBase):
         else:
             self._toplevel = toplevel
             self._window = toplevel._window
+        self._padding = padding
         self._group = ContainerGroup(
             self._window, (x, y, width, height), parent=self._parent_group
         )
         self._widgets: list[WidgetBase] = []
+
+    @property
+    def padding(self) -> space:
+        return self._padding
+
+    @padding.setter
+    def padding(self, value: space):
+        self._padding = value
+        self._update_position()
 
     def _update_batch(self):
         for widget in self._widgets:
@@ -73,12 +87,24 @@ class ContainerBase(WidgetBase):
 
     def _update_position(self):
         if self._toplevel is None:
-            self._group.area = (self._x, self._y, self._width, self._height)
+            self._group.area = (
+                self._x + self._padding.left,
+                self._y + self._padding.bottom,
+                self._width - self._padding.right,
+                self._height - self._padding.top,
+            )
         else:
             tl_area = self._toplevel._group.area
-            now_x, now_y = tl_area[0] + self._x, tl_area[1] + self._y
-            now_w = min(self._width, tl_area[2] - self._x)
-            now_h = min(self._height, tl_area[3] - self._y)
+            now_x = tl_area[0] + self._x + self._padding.left
+            now_y = tl_area[1] + self._y + self._padding.bottom
+            now_w = min(
+                self._width - self._padding.right,
+                tl_area[2] - self._x + self._padding.right,
+            )
+            now_h = min(
+                self._height - self._padding.top,
+                tl_area[3] - self._y + self._padding.right,
+            )
             self._group.area = (now_x, now_y, now_w, now_h)
         for widget in self._widgets:
             widget.position = widget.position
@@ -105,25 +131,33 @@ class ContainerBase(WidgetBase):
         """
         for widget in widgets:
             if widget in self._widgets:
+                if widget.batch is self._batch:
+                    widget.batch = None
+                if widget.group is self._group:
+                    widget.group = None
                 self._widgets.remove(widget)
 
     def on_key_press(self, symbol: int, modifiers: int):
+        if not self._enabled:
+            return
         for widget in self._widgets:
             widget.dispatch_event("on_key_press", symbol, modifiers)
 
     def on_key_release(self, symbol: int, modifiers: int):
+        if not self._enabled:
+            return
         for widget in self._widgets:
             widget.dispatch_event("on_key_release", symbol, modifiers)
 
     def on_mouse_press(self, x: int, y: int, buttons: int, modifiers: int):
-        if self._check_hit(x, y) < 0:
+        if self._check_hit(x, y) < 0 and not self._enabled:
             return
         x, y = x - self._x, y - self._y
         for widget in self._widgets:
             widget.dispatch_event("on_mouse_press", x, y, buttons, modifiers)
 
     def on_mouse_release(self, x: int, y: int, buttons: int, modifiers: int):
-        if self._check_hit(x, y) < 0:
+        if self._check_hit(x, y) < 0 and not self._enabled:
             return
         x, y = x - self._x, y - self._y
         for widget in self._widgets:
@@ -132,21 +166,21 @@ class ContainerBase(WidgetBase):
     def on_mouse_drag(
         self, x: int, y: int, dx: int, dy: int, buttons: int, modifiers: int
     ):
-        if self._check_hit(x, y) < 0:
+        if self._check_hit(x, y) < 0 and not self._enabled:
             return
         x, y = x - self._x, y - self._y
         for widget in self._widgets:
             widget.dispatch_event("on_mouse_drag", x, y, dx, dy, buttons, modifiers)
 
     def on_mouse_motion(self, x: int, y: int, dx: int, dy: int):
-        if self._check_hit(x, y) < 0:
+        if self._check_hit(x, y) < 0 and not self._enabled:
             return
         x, y = x - self._x, y - self._y
         for widget in self._widgets:
             widget.dispatch_event("on_mouse_motion", x, y, dx, dy)
 
     def on_mouse_scroll(self, x: int, y: int, scroll_x: int, scroll_y: int):
-        if self._check_hit(x, y) < 0:
+        if self._check_hit(x, y) < 0 and not self._enabled:
             return
         x, y = x - self._x, y - self._y
         for widget in self._widgets:

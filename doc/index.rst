@@ -29,3 +29,4 @@ documentation <https://pyglet.readthedocs.io>`_ first.
     modules/manager
     modules/patch
     modules/widget/index
+    modules/util
