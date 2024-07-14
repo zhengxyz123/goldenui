@@ -6,9 +6,9 @@ from typing import Optional
 from pyglet.graphics import Batch, Group
 from pyglet.window import Window
 
+from goldenui.util import space
 from goldenui.widget.base import WidgetBase
 from goldenui.widget.container.base import ContainerBase
-from goldenui.util import space
 
 
 class CenterContainer(ContainerBase):
@@ -76,11 +76,18 @@ class CenterContainer(ContainerBase):
     def _update_position(self):
         if self._filled:
             self._x, self._y = 0, 0
-            self._width, self._height = self._window.width, self._window.height
+            if self._toplevel is None:
+                self._width, self._height = self._window.width, self._window.height
+            else:
+                self._width, self._height = self._toplevel.width, self._toplevel.height
         super()._update_position()
         widget = self._widgets[0]
-        widget.x = (self._width - widget.width) // 2
-        widget.y = (self._height - widget.height) // 2
+        widget.x = (
+            self._width - self._padding.left - self._padding.right - widget.width
+        ) // 2
+        widget.y = (
+            self._height - self._padding.top - self._padding.bottom - widget.height
+        ) // 2
 
     def add(self, *widgets: WidgetBase):
         pass

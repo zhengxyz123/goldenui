@@ -8,7 +8,7 @@ class space:
     Used for ``margin`` and ``padding`` parameters.
     """
 
-    def __init__(self, *value: int) -> None:
+    def __init__(self, *value: int):
         """Create a ``space`` object.
 
         Args:
@@ -25,10 +25,11 @@ class space:
 
         Raises:
             ValueError:
-                Pass negative integers or pass 0 or 5 and more parameters.
+                Raised when passing negative integers or when passing 0 or 5 and more
+                parameters.
         """
         if not all(map(lambda x: x >= 0, value)):
-            raise ValueError("parmaters must be non-negative values")
+            raise ValueError("parameters must be non-negative values")
         if len(value) == 1:
             self._top, self._bottom = value[0], value[0]
             self._left, self._right = value[0], value[0]
