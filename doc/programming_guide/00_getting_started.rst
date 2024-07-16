@@ -88,7 +88,7 @@ master/examples/prog_guides/start.py>`_ file.
 Find More examples
 ------------------
 
-In addition to the small example above, we have provided many more examples for learning.
+In addition to the simple example above, we have provided many more examples for learning.
 
 You can clone the repository using Git and run examples:
 

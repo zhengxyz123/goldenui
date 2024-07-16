@@ -30,6 +30,7 @@ goldenui.widget.base
     The following events are triggered by pyglet, they are described in
     :py:mod:`pyglet.window` thoroughly.
 
+    .. automethod:: on_file_drop
     .. automethod:: on_key_press
     .. automethod:: on_key_release
     .. automethod:: on_mouse_press

@@ -19,7 +19,7 @@ class space:
         - When 2 values are specified, the first value applies to the top and bottom, the
           second to the left and right.
         - When 3 values are specified, the first value applies to the top, the second to
-          the right and left, the third to the bottom.
+          the left and right, the third to the bottom.
         - When 4 values are specified, the values apply to the top, right, bottom, and
           left in that order (clockwise).
 

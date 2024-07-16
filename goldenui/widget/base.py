@@ -6,6 +6,8 @@ from typing import Any, Optional
 from pyglet.event import EventDispatcher
 from pyglet.graphics import Batch, Group
 
+from goldenui import is_sphinx_run
+
 
 class WidgetBase(EventDispatcher):
     """The base class of all widgets."""
@@ -194,49 +196,55 @@ class WidgetBase(EventDispatcher):
         """Internal hook to change widget's position and size."""
         pass
 
-    # Events for GoldenUI.
+    if is_sphinx_run:
 
-    def on_repositioning(self, widget: "WidgetBase"):
-        pass
+        # Events for GoldenUI.
 
-    # Events for pyglet.
+        def on_repositioning(self, widget: "WidgetBase"):
+            pass
 
-    def on_key_press(self, symbol: int, modifiers: int):
-        pass
+        # Events for pyglet.
 
-    def on_key_release(self, symbol: int, modifiers: int):
-        pass
+        def on_file_drop(self, x: int, y: int, paths: list[str]):
+            pass
 
-    def on_mouse_press(self, x: int, y: int, buttons: int, modifiers: int):
-        pass
+        def on_key_press(self, symbol: int, modifiers: int):
+            pass
 
-    def on_mouse_release(self, x: int, y: int, buttons: int, modifiers: int):
-        pass
+        def on_key_release(self, symbol: int, modifiers: int):
+            pass
 
-    def on_mouse_drag(
-        self, x: int, y: int, dx: int, dy: int, buttons: int, modifiers: int
-    ):
-        pass
+        def on_mouse_press(self, x: int, y: int, buttons: int, modifiers: int):
+            pass
 
-    def on_mouse_motion(self, x: int, y: int, dx: int, dy: int):
-        pass
+        def on_mouse_release(self, x: int, y: int, buttons: int, modifiers: int):
+            pass
 
-    def on_mouse_scroll(self, x: int, y: int, scroll_x: int, scroll_y: int):
-        pass
+        def on_mouse_drag(
+            self, x: int, y: int, dx: int, dy: int, buttons: int, modifiers: int
+        ):
+            pass
 
-    def on_resize(self, width: int, height: int):
-        pass
+        def on_mouse_motion(self, x: int, y: int, dx: int, dy: int):
+            pass
 
-    def on_text(self, text: str):
-        pass
+        def on_mouse_scroll(self, x: int, y: int, scroll_x: int, scroll_y: int):
+            pass
 
-    def on_text_motion(self, motion: int):
-        pass
+        def on_resize(self, width: int, height: int):
+            pass
 
-    def on_text_motion_select(self, motion: int):
-        pass
+        def on_text(self, text: str):
+            pass
+
+        def on_text_motion(self, motion: int):
+            pass
+
+        def on_text_motion_select(self, motion: int):
+            pass
 
 
+WidgetBase.register_event_type("on_file_drop")
 WidgetBase.register_event_type("on_key_press")
 WidgetBase.register_event_type("on_key_release")
 WidgetBase.register_event_type("on_mouse_press")

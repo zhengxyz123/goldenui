@@ -6,7 +6,6 @@ from typing import Optional
 from pyglet.graphics import Batch, Group
 from pyglet.window import Window
 
-from goldenui.util import space
 from goldenui.widget.base import WidgetBase
 from goldenui.widget.container.base import ContainerBase
 
@@ -24,7 +23,6 @@ class CenterContainer(ContainerBase):
         *,
         filled: bool = False,
         enabled: bool = True,
-        padding: space = space(0),
         batch: Optional[Batch] = None,
         group: Optional[Group] = None,
     ):
@@ -47,8 +45,6 @@ class CenterContainer(ContainerBase):
                 Whether filled the window.
             enabled:
                 Whether allow user input.
-            padding:
-                Padding area of the container.
             batch:
                 Optional batch to add the container to.
             group:
@@ -61,7 +57,6 @@ class CenterContainer(ContainerBase):
             width,
             height,
             enabled=enabled,
-            padding=padding,
             batch=batch,
             group=group,
         )
@@ -71,7 +66,10 @@ class CenterContainer(ContainerBase):
         self._filled = filled
         if self._filled:
             self.x, self.y = 0, 0
-            self.width, self.height = self._window.width, self._window.height
+            if self._toplevel is None:
+                self.width, self.height = self._window.width, self._window.height
+            else:
+                self.width, self._height = self._toplevel.width, self._toplevel.height
 
     def _update_position(self):
         if self._filled:
@@ -82,12 +80,8 @@ class CenterContainer(ContainerBase):
                 self._width, self._height = self._toplevel.width, self._toplevel.height
         super()._update_position()
         widget = self._widgets[0]
-        widget.x = (
-            self._width - self._padding.left - self._padding.right - widget.width
-        ) // 2
-        widget.y = (
-            self._height - self._padding.top - self._padding.bottom - widget.height
-        ) // 2
+        widget.x = (self._width - widget.width) // 2
+        widget.y = (self._height - widget.height) // 2
 
     def add(self, *widgets: WidgetBase):
         pass

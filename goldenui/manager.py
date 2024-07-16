@@ -100,6 +100,11 @@ class GUIManager:
         self.add(widget)
         self.on_mouse_motion(*self._mouse_pos, 0, 0)
 
+    def on_file_drop(self, x: int, y: int, paths: list[str]):
+        for widget in self._cells.get(self._hash(x, y), set()):
+            widget.dispatch_event("on_file_drop", x, y, paths)
+        self._mouse_pos = x, y
+
     def on_key_press(self, symbol: int, modifiers: int):
         for cell in self._cells.values():
             for widget in cell:
