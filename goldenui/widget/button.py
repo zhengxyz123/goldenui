@@ -49,7 +49,7 @@ class TextButton(WidgetBase):
         batch: Optional[Batch] = None,
         group: Optional[Group] = None,
     ):
-        """Create a TextButton.
+        """Create a ``TextButton``.
 
         Args:
             x:
