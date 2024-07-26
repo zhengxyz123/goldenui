@@ -15,7 +15,6 @@ window.set_minimum_size(400, 300)
 manager = GUIManager(window)
 button = TextButton("Hello", width=180, height=60, font_size=20)
 container = CenterContainer(window, button, filled=True)
-window.push_handlers(on_resize=container.on_resize)
 manager.add(container)
 
 

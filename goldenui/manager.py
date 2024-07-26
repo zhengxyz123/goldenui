@@ -30,6 +30,7 @@ class GUIManager:
         """
         self._window = window
         self._batch = Batch()
+        self._another_behaviour = False
         self._enabled = True
         if self._enabled:
             self._window.push_handlers(self)
@@ -59,6 +60,13 @@ class GUIManager:
         """Normalize position to cell."""
         return x // self._cell_size, y // self._cell_size
 
+    def _on_repositioning_hook(self, widget: WidgetBase):
+        self._another_behaviour = True
+        self.remove(widget)
+        self.add(widget)
+        self._another_behaviour = False
+        self.on_mouse_motion(*self._mouse_pos, 0, 0)
+
     def add(self, *widgets: WidgetBase):
         """Add some widgets to the manager.
 
@@ -74,7 +82,9 @@ class GUIManager:
                     self._cells.setdefault((i, j), set()).add(widget)
             if widget.batch is None:
                 widget.batch = self._batch
-            widget.set_handler("on_repositioning", self.on_repositioning_hook)
+            if not self._another_behaviour:
+                self._window.push_handlers(on_resize=widget.on_resize)
+                widget.set_handler("on_repositioning", self._on_repositioning_hook)
 
     def remove(self, *widgets: WidgetBase):
         """Remove some added widgets.
@@ -89,16 +99,13 @@ class GUIManager:
                     cell.remove(widget)
             if widget.batch is self._batch:
                 widget.batch = None
-            widget.set_handler("on_repositioning", lambda w: None)
+            if not self._another_behaviour:
+                self._window.remove_handlers(on_resize=widget.on_resize)
+                widget.set_handler("on_repositioning", lambda w: None)
 
     def draw(self):
         """Draw all widgets in the manager."""
         self._batch.draw()
-
-    def on_repositioning_hook(self, widget: WidgetBase):
-        self.remove(widget)
-        self.add(widget)
-        self.on_mouse_motion(*self._mouse_pos, 0, 0)
 
     def on_file_drop(self, x: int, y: int, paths: list[str]):
         for widget in self._cells.get(self._hash(x, y), set()):
