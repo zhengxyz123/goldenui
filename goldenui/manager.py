@@ -83,7 +83,8 @@ class GUIManager:
             if widget.batch is None:
                 widget.batch = self._batch
             if not self._another_behaviour:
-                self._window.push_handlers(on_resize=widget.on_resize)
+                if hasattr(widget, "on_resize"):
+                    self._window.push_handlers(on_resize=widget.on_resize)
                 widget.set_handler("on_repositioning", self._on_repositioning_hook)
 
     def remove(self, *widgets: WidgetBase):
@@ -100,7 +101,8 @@ class GUIManager:
             if widget.batch is self._batch:
                 widget.batch = None
             if not self._another_behaviour:
-                self._window.remove_handlers(on_resize=widget.on_resize)
+                if hasattr(widget, "on_resize"):
+                    self._window.remove_handlers(on_resize=widget.on_resize)
                 widget.set_handler("on_repositioning", lambda w: None)
 
     def draw(self):
